@@ -11,54 +11,32 @@
 
 <script lang="coffee">
   export default {
-    data: ->
-      currentPage: 1
-      totalPages: 0
     props:
-      url:
-        type: String
-        required: true
-      eventName:
-        type: String
-        required: true
+      totalPages:
+        type: Number
+        requried: true
     computed:
+      currentPage: ->
+        parseInt(@$route.params.page)
       firstPage: ->
-        this.currentPage < 2
+        @currentPage < 2
       lastPage: ->
-        this.totalPages is this.currentPage
+        @totalPages is @currentPage
       disablePrev: ->
-        if this.firstPage then 'disabled': true
+        if @firstPage then 'disabled': true
       disableNext: ->
-        if this.lastPage then 'disabled': true
-    mounted: ->
-      this.fetchData()
+        if @lastPage then 'disabled': true
     methods:
-      fetchData: () ->
-        this.$http.get(this.url, params: { page: this.currentPage }).then((arts) =>
-          this.$set(this, 'totalPages', arts.body?.meta['page-count'])
-          artworks = arts.body?.data?.map((art)=>
-            art.attributes['id'] = art.id
-            art.attributes
-          )
-          this.$emit(this.eventName, artworks)
-        , (response) ->
-          console.log "Error in request: #{response}"
-        )
       nextPage: ->
-        unless this.lastPage
-          this.$set(this, 'currentPage', this.currentPage + 1)
-          this.fetchData()
+        unless @lastPage
+          @$router.push("/page/#{@currentPage + 1}")
       prevPage: ->
-        unless this.firstPage
-          this.$set(this, 'currentPage', this.currentPage - 1)
-          this.fetchData()
+        unless @firstPage
+          @$router.push("/page/#{@currentPage - 1}")
   }
 </script>
 
 <style scoped lang='scss'>
-  @import 'bootstrap/dist/css/bootstrap.css';
-  @import 'bootstrap-vue/dist/bootstrap-vue.css';
-
   nav, ul {
     margin: auto;
     ul {

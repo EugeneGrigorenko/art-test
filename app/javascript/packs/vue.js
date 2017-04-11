@@ -1,3 +1,4 @@
+
 import Vue from 'vue/dist/vue.esm';
 import VueRouter from 'vue-router';
 import VueResource from 'vue-resource';
@@ -11,8 +12,9 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 const routes = [
-  { path: '/',    component: Home },
-  { path: '/artworks/:id', component: ArtworkDetailed }
+  { path: '/artworks/:id', component: ArtworkDetailed },
+  { path: '/page/:page', component: Home },
+  { path: '/', redirect: '/page/1' }
 ]
 
 const router = new VueRouter({

@@ -6,13 +6,15 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Artwork.create({
-  artist_id: (1..5).to_a.sample,
-  title: ['Picture', 'Art', 'Stuff', 'Something', 'Trash', 'NotAnArt', 'High', 'Foot'].sample,
-  year: (1000..2017).to_a.sample,
-  image: Rails.root.join("db/images.png").open,
-  mediums: ['someone', 'nobody', 'agency', 'whoknowswho'].sample
-})
+15.times do
+  Artwork.create({
+    artist_id: (1..5).to_a.sample,
+    title: ['Picture', 'Art', 'Stuff', 'Something', 'Trash', 'NotAnArt', 'High', 'Foot'].sample,
+    year: (1000..2017).to_a.sample,
+    image: Rails.root.join("db/images.png").open,
+    mediums: ['someone', 'nobody', 'agency', 'whoknowswho'].sample
+  })
+end
 
 unless Artist.count > 0
   Artist.create({

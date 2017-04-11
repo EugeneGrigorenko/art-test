@@ -10,7 +10,7 @@
   export default {
     computed:
       starClass: ->
-        if this.published
+        if @published
           published: true
         else
           unpublished: true
@@ -23,18 +23,18 @@
         type: Boolean
     methods:
       changeState: ->
-        this.$http.patch("/api/artworks/#{this.artId}", {
+        @$http.patch("/api/artworks/#{@artId}", {
           data:
             type: 'artworks'
-            id: this.artId
+            id: @artId
             attributes:
-              published: !this.published
+              published: !@published
           }, {
           headers:
             'Content-Type': "application/vnd.api+json"
         }).then(=>
-            this.$emit('publishingChanged', this.artId)
-          , (response)->
+            @$emit('publishingChanged', @artId)
+          , (response) ->
             console.log "Error on request: #{response}"
           )
   }

@@ -1,20 +1,20 @@
 <template lang='haml'>
   .card.artwork.col-sm-6{ "v-if": "artwork" }
-    %img.img{ "v-bind:src": "artwork['large-image-url']" }
+    %img.img{ "v-bind:src": "artwork.largeImageUrl" }
     .card-block
       .row
         %h1.card-title {{ artwork.title }}
-        %publisher.star{ "v-bind:artId": "artwork.id", "v-bind:published": "artwork.published", "v-on:publishingChanged": "updateArtwork()" }
+        %publisher.star{ "v-bind:artId": "artwork.id", "v-bind:published": "artwork.published", "v-on:publishingChanged": "toggleArtwork()" }
 
       %ul.card-text
         %li Mediums: {{ artwork.mediums }}
         %li Year: {{ artwork.year }}
 
         %li.artist Artist: {{ artist.name }}
-        %li Arts number: {{ artist['artworks-count'] }}
-        %li Date of Birth: {{ artist['date-of-birth'] }}
+        %li Arts number: {{ artist.artworksCount }}
+        %li Date of Birth: {{ artist.dateOfBirth }}
         %li Biography: {{ artist.biography }}
-      %router-link{ "v-bind:to": "'/'" } Home
+      %a{ href: "#", "v-on:click": "back" } Back
 </template>
 
 <script lang="coffee">
@@ -27,25 +27,24 @@
       artwork: null
       artist: {}
     mounted: ()->
-      this.fetchArtwork()
+      @fetchArtwork()
     methods:
+      back: ->
+        @$router.go(-1)
       fetchArtwork: ->
-        this.$http.get("/api/artworks/#{this.$route.params.id}?include=artist").then((art) =>
-          this.$set(this, 'artwork', art.body?.data?.attributes)
-          this.$set(this.artwork, 'id', art.body?.data?.id)
-          this.$set(this, 'artist', art.body?.included?[0]?.attributes)
+        @$http.get("/api/artworks/#{@$route.params.id}?include=artist").then((art) =>
+          @artwork = art.body?.data?.attributes
+          @artwork.id = art.body?.data?.id
+          @artist = art.body?.included?[0]?.attributes
         , (response) ->
           console.log "Error on request: #{response}"
         )
-      updateArtwork: ->
-        this.artwork.published = !this.artwork.published
+      toggleArtwork: ->
+        @artwork.published = !@artwork.published
   }
 </script>
 
 <style scoped lang='scss'>
-  @import 'bootstrap/dist/css/bootstrap.css';
-  @import 'bootstrap-vue/dist/bootstrap-vue.css';
-
   .card.artwork {
     padding-top: 10px;
     margin: auto;
