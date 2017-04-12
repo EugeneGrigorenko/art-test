@@ -10,10 +10,7 @@
   export default {
     computed:
       starClass: ->
-        if @published
-          published: true
-        else
-          unpublished: true
+        published: true if @published
     components:
       icon: Icon
     props:
@@ -42,12 +39,10 @@
 
 <style scoped lang='scss'>
   .published {
-    color: #f2d707;
-  }
-  .unpublished {
-    color: #898989;
+    color: #f2d707 !important;
   }
   .star {
+    color: #898989;
     cursor: pointer;
   }
 </style>

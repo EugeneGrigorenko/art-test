@@ -33,9 +33,10 @@
         @$router.go(-1)
       fetchArtwork: ->
         @$http.get("/api/artworks/#{@$route.params.id}?include=artist").then((art) =>
-          @artwork = art.body?.data?.attributes
-          @artwork.id = art.body?.data?.id
-          @artist = art.body?.included?[0]?.attributes
+          if body = art.body
+            @artwork = body.data.attributes
+            @artwork.id = body.data.id
+            @artist = body.included?[0]?.attributes
         , (response) ->
           console.log "Error on request: #{response}"
         )
