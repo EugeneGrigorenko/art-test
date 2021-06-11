@@ -4,5 +4,5 @@ about: text.
 title: ''
 labels: ''
 assignees: ''
-
----Suppose to be a valid manual template
+---
+Suppose to be a valid manual template
